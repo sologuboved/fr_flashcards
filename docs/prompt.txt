@@ -1,0 +1,1 @@
+Continuing Android flashcard app project (org.sologuboved.frflashcards). Current state: app loads JSON from server, shows cards, individual taps work, Français/Traductions button needs fixing. Last file: MainActivity.kt with Compose. GitHub: https://github.com/sologuboved/fr_flashcards
