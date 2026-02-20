@@ -12,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -27,12 +26,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.net.URL
+import org.sologuboved.frflashcards.ui.theme.FrflashcardsTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
+            FrflashcardsTheme {
                 FlashcardApp()
             }
         }
@@ -60,9 +60,13 @@ fun FlashcardApp() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .statusBarsPadding()      // Clears status bar (time, battery)
+            .navigationBarsPadding()  // Clears bottom nav/gesture area
+            .padding(horizontal = 16.dp)  // Side padding only
+            // .padding(16.dp)
     ) {
         // Top buttons
+        Spacer(modifier = Modifier.height(48.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
