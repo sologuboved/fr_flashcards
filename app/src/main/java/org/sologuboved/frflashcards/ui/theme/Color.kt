@@ -2,10 +2,13 @@ package org.sologuboved.frflashcards.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFD0BCFF)
-val PurpleGrey80 = Color(0xFFCCC2DC)
-val Pink80 = Color(0xFFEFB8C8)
-
 val Purple40 = Color(0xFF6650a4)
 val PurpleGrey40 = Color(0xFF625b71)
 val Pink40 = Color(0xFF7D5260)
+
+// Matrix terminal colors - fully opaque (0xFF prefix)
+val BlackRussian = Color(0xFF0a0a0a)      // Pure black
+val MatrixGreen = Color(0xFF00FF41)       // Bright green
+val DarkGreen = Color(0xFF00CC33)         // Slightly darker green
+val GreenGlow = Color(0xFF33FF66)         // Lighter green accent
+val DarkGrey = Color(0xFF1a1a1a)          // Dark grey for surfaces
