@@ -23,11 +23,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalContext
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.net.URL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.sologuboved.frflashcards.ui.theme.BlackRussian
-import java.net.URL
 import org.sologuboved.frflashcards.ui.theme.FrflashcardsTheme
 
 class MainActivity : ComponentActivity() {
@@ -58,93 +58,95 @@ fun FlashcardApp() {
         // Set every card’s showingFrench to match the global mode
         return currentCards.map { it.copy(showingFrench = showFrenchDefault) }
     }
-
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(BlackRussian)   // full-screen black, no frame
+    ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()      // Clears status bar (time, battery)
             .navigationBarsPadding()  // Clears bottom nav/gesture area
             .padding(horizontal = 16.dp)  // Side padding only
-            .background(BlackRussian)
-            // .padding(16.dp)
-
-    ) {
-        // Top buttons
-        Spacer(modifier = Modifier.height(48.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
         ) {
-            Button(
-                onClick = {
-                    // Toggle global mode and apply to all
-                    showFrenchDefault = !showFrenchDefault
-                    cards = applyDefaultModeToAll(cards)
-                },
-                modifier = Modifier.weight(1f)
+            // Top buttons
+            Spacer(modifier = Modifier.height(48.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    if (showFrenchDefault) "Traductions" else "Français",
-                    fontSize = 18.sp
-                )
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Button(
-                onClick = {
-                    scope.launch {
-                        isLoading = true
-                        try {
-                            val json = withContext(Dispatchers.IO) {
-                                URL(AppConfig.JSON_URL).readText()
-                            }
-                            val gson = Gson()
-                            val type = object : TypeToken<List<Card>>() {}.type
-                            val loaded: List<Card> = gson.fromJson(json, type)
-
-                            // After refresh: show translations by default
-                            showFrenchDefault = false
-                            cards = loaded.map { it.copy(showingFrench = false) }
-
-                            Toast.makeText(
-                                context,
-                                "Chargé: ${cards.size} cartes",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        } catch (e: Exception) {
-                            Toast.makeText(
-                                context,
-                                "Erreur: ${e.message}",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        } finally {
-                            isLoading = false
-                        }
-                    }
-                },
-                enabled = !isLoading
-            ) {
-                Text("Actualiser")
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Cards list
-        LazyColumn {
-            itemsIndexed(cards) { index, card ->
-                CardItem(
-                    text = if (card.showingFrench) card.mot else card.trad,
+                Button(
                     onClick = {
-                        // Toggle only this car]]d’s state
-                        cards = cards.toMutableList().also { list ->
-                            val current = list[index]
-                            list[index] = current.copy(showingFrench = !current.showingFrench)
+                        // Toggle global mode and apply to all
+                        showFrenchDefault = !showFrenchDefault
+                        cards = applyDefaultModeToAll(cards)
+                    },
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        if (showFrenchDefault) "Traductions" else "Français",
+                        fontSize = 18.sp
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Button(
+                    onClick = {
+                        scope.launch {
+                            isLoading = true
+                            try {
+                                val json = withContext(Dispatchers.IO) {
+                                    URL(AppConfig.JSON_URL).readText()
+                                }
+                                val gson = Gson()
+                                val type = object : TypeToken<List<Card>>() {}.type
+                                val loaded: List<Card> = gson.fromJson(json, type)
+
+                                // After refresh: show translations by default
+                                showFrenchDefault = false
+                                cards = loaded.map { it.copy(showingFrench = false) }
+
+                                Toast.makeText(
+                                    context,
+                                    "Chargé: ${cards.size} cartes",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } catch (e: Exception) {
+                                Toast.makeText(
+                                    context,
+                                    "Erreur: ${e.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            } finally {
+                                isLoading = false
+                            }
                         }
-                    }
-                )
+                    },
+                    enabled = !isLoading
+                ) {
+                    Text("Actualiser")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Cards list
+            LazyColumn {
+                itemsIndexed(cards) { index, card ->
+                    CardItem(
+                        text = if (card.showingFrench) card.mot else card.trad,
+                        onClick = {
+                            // Toggle only this car]]d’s state
+                            cards = cards.toMutableList().also { list ->
+                                val current = list[index]
+                                list[index] = current.copy(showingFrench = !current.showingFrench)
+                            }
+                        }
+                    )
+                }
             }
         }
     }
