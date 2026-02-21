@@ -8,10 +8,10 @@ private val MatrixDarkScheme = darkColorScheme(
     primary = MatrixGreen,
     secondary = DarkGreen,
     tertiary = GreenGlow,
-    background = BlackRussian,
+    background = DarkBackgroundColor,
     surface = DarkGrey,
-    onPrimary = BlackRussian,
-    onSecondary = BlackRussian,
+    onPrimary = DarkBackgroundColor,
+    onSecondary = DarkBackgroundColor,
     onBackground = MatrixGreen,
     onSurface = MatrixGreen
 )

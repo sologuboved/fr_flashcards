@@ -27,8 +27,11 @@ import java.net.URL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.sologuboved.frflashcards.ui.theme.BlackRussian
+import org.sologuboved.frflashcards.ui.theme.DarkBackgroundColor
+import org.sologuboved.frflashcards.ui.theme.DarkGrey
+import org.sologuboved.frflashcards.ui.theme.FrenchColor
 import org.sologuboved.frflashcards.ui.theme.FrflashcardsTheme
+import org.sologuboved.frflashcards.ui.theme.MatrixGreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,7 +64,7 @@ fun FlashcardApp() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(BlackRussian)   // full-screen black, no frame
+            .background(DarkBackgroundColor)   // full-screen black, no frame
     ) {
     Column(
         modifier = Modifier
@@ -139,6 +142,7 @@ fun FlashcardApp() {
                 itemsIndexed(cards) { index, card ->
                     CardItem(
                         text = if (card.showingFrench) card.mot else card.trad,
+                        isShowingFrench = card.showingFrench,
                         onClick = {
                             // Toggle only this car]]d’s state
                             cards = cards.toMutableList().also { list ->
@@ -154,20 +158,29 @@ fun FlashcardApp() {
 }
 
 @Composable
-fun CardItem(text: String, onClick: () -> Unit) {
+fun CardItem(
+    text: String,
+    isShowingFrench: Boolean,  // NEW PARAMETER
+    onClick: () -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp)
             .clickable { onClick() },
         shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = if (isShowingFrench) FrenchColor else DarkGrey,  // ← mot=FrenchColor, trad=DarkGrey
+            contentColor = MatrixGreen
+        )
     ) {
         Text(
             text = text,
             modifier = Modifier.padding(16.dp),
             fontSize = 16.sp,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = MatrixGreen
         )
     }
 }
