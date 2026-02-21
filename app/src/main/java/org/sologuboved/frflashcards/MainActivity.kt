@@ -99,7 +99,8 @@ fun FlashcardApp() {
                             isLoading = true
                             try {
                                 val json = withContext(Dispatchers.IO) {
-                                    URL(AppConfig.JSON_URL).readText()
+                                    URL("${AppConfig.JSON_URL}?t=${System.currentTimeMillis()}&_=${System.nanoTime()}").readText()
+
                                 }
                                 val gson = Gson()
                                 val type = object : TypeToken<List<Card>>() {}.type
