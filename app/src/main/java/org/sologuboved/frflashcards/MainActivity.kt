@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -25,6 +26,7 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.sologuboved.frflashcards.ui.theme.BlackRussian
 import java.net.URL
 import org.sologuboved.frflashcards.ui.theme.FrflashcardsTheme
 
@@ -63,7 +65,9 @@ fun FlashcardApp() {
             .statusBarsPadding()      // Clears status bar (time, battery)
             .navigationBarsPadding()  // Clears bottom nav/gesture area
             .padding(horizontal = 16.dp)  // Side padding only
+            .background(BlackRussian)
             // .padding(16.dp)
+
     ) {
         // Top buttons
         Spacer(modifier = Modifier.height(48.dp))
@@ -134,7 +138,7 @@ fun FlashcardApp() {
                 CardItem(
                     text = if (card.showingFrench) card.mot else card.trad,
                     onClick = {
-                        // Toggle only this card’s state
+                        // Toggle only this car]]d’s state
                         cards = cards.toMutableList().also { list ->
                             val current = list[index]
                             list[index] = current.copy(showingFrench = !current.showingFrench)
