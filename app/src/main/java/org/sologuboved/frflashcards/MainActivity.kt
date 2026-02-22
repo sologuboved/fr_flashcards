@@ -191,7 +191,7 @@ fun CardItem(
             text = text,
             modifier = Modifier.padding(16.dp),
             fontSize = 16.sp,
-            textAlign = TextAlign.Center,
+            textAlign = TextAlign.Start,
             color = MatrixGreen
         )
     }
