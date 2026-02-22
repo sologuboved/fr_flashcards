@@ -86,7 +86,7 @@ fun FlashcardApp() {
         ) {
             Spacer(modifier = Modifier.height(48.dp))
             // Top buttons
-            Spacer(modifier = Modifier.height(48.dp))
+            //  Spacer(modifier = Modifier.height(48.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
