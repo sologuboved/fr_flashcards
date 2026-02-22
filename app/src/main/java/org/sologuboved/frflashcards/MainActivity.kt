@@ -3,7 +3,9 @@ package org.sologuboved.frflashcards
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,10 +19,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.net.URL
@@ -36,6 +42,11 @@ import org.sologuboved.frflashcards.ui.theme.MatrixGreen
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // OxygenOS 15 + OnePlus fix
+        window.navigationBarColor = DarkBackgroundColor.toArgb()  // Ignore deprecation warning
+        window.statusBarColor = DarkBackgroundColor.toArgb()
+
         setContent {
             FrflashcardsTheme {
                 FlashcardApp()
@@ -64,15 +75,16 @@ fun FlashcardApp() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackgroundColor)   // full-screen black, no frame
+            .background(DarkBackgroundColor)  // Black behind nav bar
     ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()      // Clears status bar (time, battery)
-            .navigationBarsPadding()  // Clears bottom nav/gesture area
-            .padding(horizontal = 16.dp)  // Side padding only
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp)
+                .statusBarsPadding()      // Only ONCE, here
+                .navigationBarsPadding()  // Only ONCE, here
         ) {
+            Spacer(modifier = Modifier.height(48.dp))
             // Top buttons
             Spacer(modifier = Modifier.height(48.dp))
             Row(
