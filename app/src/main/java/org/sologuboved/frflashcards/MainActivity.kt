@@ -30,6 +30,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.net.URL
+import kotlin.random.Random
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -84,15 +85,14 @@ fun FlashcardApp() {
                 .statusBarsPadding()      // Only ONCE, here
                 .navigationBarsPadding()  // Only ONCE, here
         ) {
-            Spacer(modifier = Modifier.height(48.dp))
             // Top buttons
-            //  Spacer(modifier = Modifier.height(48.dp))
+            Spacer(modifier = Modifier.height(48.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Button(
+                Button(  // Français/Traductions
                     onClick = {
                         // Toggle global mode and apply to all
                         showFrenchDefault = !showFrenchDefault
@@ -108,8 +108,18 @@ fun FlashcardApp() {
 
                 Spacer(modifier = Modifier.width(8.dp))
 
-                Button(
+                Button(  // ← NEW Mélanger
                     onClick = {
+                        cards = cards.shuffled()  // Randomize order instantly!
+                    }
+                ) {
+                    Text("Mélanger")
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Button(
+                    onClick = {  // Actualiser
                         scope.launch {
                             isLoading = true
                             try {
@@ -156,7 +166,7 @@ fun FlashcardApp() {
                         text = if (card.showingFrench) card.mot else card.trad,
                         isShowingFrench = card.showingFrench,
                         onClick = {
-                            // Toggle only this car]]d’s state
+                            // Toggle only this card’s state
                             cards = cards.toMutableList().also { list ->
                                 val current = list[index]
                                 list[index] = current.copy(showingFrench = !current.showingFrench)
