@@ -69,6 +69,27 @@ fun FlashcardApp() {
 
     var isLoading by remember { mutableStateOf(false) }
 
+    LaunchedEffect(Unit) {
+        scope.launch {
+            isLoading = true
+            try {
+                val json = withContext(Dispatchers.IO) {
+                    URL("${AppConfig.JSON_URL}?t=${System.currentTimeMillis()}&_=${System.nanoTime()}").readText()
+                }
+                val gson = Gson()
+                val type = object : TypeToken<List<Card>>() {}.type
+                val loaded: List<Card> = gson.fromJson(json, type) ?: emptyList()
+
+                showFrenchDefault = false
+                cards = loaded.map { it.copy(showingFrench = false) }
+            } catch (e: Exception) {
+                // Silent fail on launch (user can tap Actualiser)
+            } finally {
+                isLoading = false
+            }
+        }
+    }
+
     fun applyDefaultModeToAll(currentCards: List<Card>): List<Card> {
         // Set every card’s showingFrench to match the global mode
         return currentCards.map { it.copy(showingFrench = showFrenchDefault) }
