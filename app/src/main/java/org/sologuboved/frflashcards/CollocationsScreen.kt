@@ -31,6 +31,7 @@ import java.net.URL
 
 private data class CollocationEntry(val mot: String?, val trad: String?)
 private val TranslationColor = Color(0xFFB6F5C8)
+private val TagColor = Color(0xFF8AB4F8)
 
 private sealed interface CollView {
     data object Menu : CollView
@@ -51,7 +52,10 @@ private fun CollocationEntry.styled(tag: String? = null): AnnotatedString = buil
         append(" ")
         withStyle(SpanStyle(color = TranslationColor)) { append(trad) }
     }
-    if (tag != null) append(" $tag")
+    if (tag != null) {
+        append(" ")
+        withStyle(SpanStyle(color = TagColor)) { append("#$tag") }
+    }
 }
 
 @Composable
@@ -125,7 +129,7 @@ fun CollocationsScreen() {
                     if (view is CollView.Random) {
                         Spacer(modifier = Modifier.width(8.dp))
                         Button(onClick = { view = CollView.Random(randomLines()) }) {
-                            Text("Relance")
+                            Text("relance")
                         }
                     }
                 }
