@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="Theme.CartesMémoire" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Use a built-in platform dark theme as the parent -->
+    <style name="Theme.CartesMémoire" parent="android:Theme.Material.NoActionBar">
+        <!-- This forces the initial window background to be dark gray/black -->
+        // <item name="android:windowBackground">#D3D3D3</item>
+        <item name="android:windowSplashScreenBackground">#26252b</item>
+    </style>
 </resources>
