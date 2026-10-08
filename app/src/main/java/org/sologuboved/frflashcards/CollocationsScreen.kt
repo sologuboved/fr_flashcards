@@ -30,7 +30,7 @@ import org.sologuboved.frflashcards.ui.theme.MatrixGreen
 import java.net.URL
 
 private data class CollocationEntry(val mot: String?, val trad: String?)
-private val TranslationColor = Color(0xFFB9FCBA)
+private val TranslationColor = Color(0xFFB6F5C8)
 
 private sealed interface CollView {
     data object Menu : CollView
