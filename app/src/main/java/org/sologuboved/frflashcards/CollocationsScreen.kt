@@ -168,7 +168,7 @@ fun CollocationsScreen() {
                         contentPadding = PaddingValues(bottom = 32.dp)
                     ) {
                         item { Text("Étiquette sélectionnée : ${v.name}", color = MatrixGreen, fontSize = 18.sp) }
-                        item { Text("-${entries.size}-", color = MatrixGreen, fontSize = 18.sp) }
+                        item { Text("-${entries.size}-\n", color = MatrixGreen, fontSize = 18.sp) }
                         items(entries) { Text(it.styled(), color = MatrixGreen, fontSize = 16.sp) }
                     }
                 }
