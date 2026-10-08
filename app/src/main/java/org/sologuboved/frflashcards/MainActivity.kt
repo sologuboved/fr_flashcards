@@ -34,20 +34,22 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AppPager() {
-    val pagerState = rememberPagerState(pageCount = { 2 })
+    val pagerState = rememberPagerState(pageCount = { 3 })
 
     Box(modifier = Modifier.fillMaxSize().background(DarkBackgroundColor)) {
         HorizontalPager(
             state = pagerState,
+            beyondViewportPageCount = 2,
             modifier = Modifier.fillMaxSize()
         ) { page ->
             when (page) {
-                0 -> FlashcardScreen(
+                0 -> CollocationsScreen()
+                1 -> FlashcardScreen(
                     jsonUrl = AppConfig.MAIN_JSON_URL,
                     parseJson = ::parseMotTradJson,
                     showLanguageToggle = true
                 )
-                1 -> FlashcardScreen(
+                2 -> FlashcardScreen(
                     jsonUrl = AppConfig.COI_JSON_URL,
                     parseJson = ::parseVerbePrepositionJson,
                     showLanguageToggle = false
@@ -61,7 +63,7 @@ fun AppPager() {
                 .navigationBarsPadding()
                 .padding(bottom = 8.dp)
         ) {
-            repeat(2) { index ->
+            repeat(3) { index ->
                 Text(
                     text = if (pagerState.currentPage == index) "●" else "○",
                     color = MatrixGreen,
