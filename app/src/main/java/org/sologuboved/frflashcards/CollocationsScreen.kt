@@ -82,6 +82,10 @@ fun CollocationsScreen() {
     fun usableEntries(tag: String): List<CollocationEntry> =
         data[tag].orEmpty().filter { !it.mot.isNullOrBlank() }
 
+    fun randomLines(): List<String> = tags.mapNotNull { tag ->
+        usableEntries(tag).randomOrNull()?.let { "${it.asLine()} *$tag" }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -107,6 +111,12 @@ fun CollocationsScreen() {
                     ) { Text("Actualiser") }
                 } else {
                     Button(onClick = { view = CollView.Menu }) { Text("retour") }
+                    if (view is CollView.Random) {
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(onClick = { view = CollView.Random(randomLines()) }) {
+                            Text("Relance")
+                        }
+                    }
                 }
             }
 
@@ -130,12 +140,7 @@ fun CollocationsScreen() {
                     item {
                         // Default colors = same green as "Actualiser"
                         Button(
-                            onClick = {
-                                val lines = tags.mapNotNull { tag ->
-                                    usableEntries(tag).randomOrNull()?.let { "${it.asLine()} *$tag" }
-                                }
-                                view = CollView.Random(lines)
-                            },
+                            onClick = { view = CollView.Random(randomLines()) },
                             modifier = Modifier.fillMaxWidth()
                         ) { Text("aléatoire", fontSize = 18.sp) }
                     }
@@ -153,11 +158,13 @@ fun CollocationsScreen() {
                     }
                 }
 
-                is CollView.Random -> LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    contentPadding = PaddingValues(bottom = 32.dp)
-                ) {
-                    items(v.lines) { Text(it, color = MatrixGreen, fontSize = 16.sp) }
+                is CollView.Random -> key(v) {
+                    LazyColumn(
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        contentPadding = PaddingValues(bottom = 32.dp)
+                    ) {
+                        items(v.lines) { Text(it, color = MatrixGreen, fontSize = 16.sp) }
+                    }
                 }
             }
         }
