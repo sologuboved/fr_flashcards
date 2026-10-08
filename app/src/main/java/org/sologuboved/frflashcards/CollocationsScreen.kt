@@ -14,6 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
@@ -25,11 +30,12 @@ import org.sologuboved.frflashcards.ui.theme.MatrixGreen
 import java.net.URL
 
 private data class CollocationEntry(val mot: String?, val trad: String?)
+private val TranslationColor = Color(0xFFB9FCBA)
 
 private sealed interface CollView {
     data object Menu : CollView
     data class Tag(val name: String) : CollView
-    data class Random(val lines: List<String>) : CollView
+    data class Random(val lines: List<AnnotatedString>) : CollView
 }
 
 private fun parseCollocationsJson(json: String): Map<String, List<CollocationEntry>> {
@@ -37,10 +43,15 @@ private fun parseCollocationsJson(json: String): Map<String, List<CollocationEnt
     return Gson().fromJson<Map<String, List<CollocationEntry>>>(json, type) ?: emptyMap()
 }
 
-// "mot ~ trad", or just "mot" when there is no translation
-private fun CollocationEntry.asLine(): String {
-    val front = mot.orEmpty()
-    return if (trad.isNullOrBlank()) front else "$front ~ $trad"
+// "mot trad", or just "mot" when there is no translation
+// French part in the default green, translation in TranslationColor, no tilde
+private fun CollocationEntry.styled(tag: String? = null): AnnotatedString = buildAnnotatedString {
+    append(mot.orEmpty())
+    if (!trad.isNullOrBlank()) {
+        append(" ")
+        withStyle(SpanStyle(color = TranslationColor)) { append(trad) }
+    }
+    if (tag != null) append(" $tag")
 }
 
 @Composable
@@ -82,8 +93,8 @@ fun CollocationsScreen() {
     fun usableEntries(tag: String): List<CollocationEntry> =
         data[tag].orEmpty().filter { !it.mot.isNullOrBlank() }
 
-    fun randomLines(): List<String> = tags.mapNotNull { tag ->
-        usableEntries(tag).randomOrNull()?.let { "${it.asLine()} *$tag" }
+    fun randomLines(): List<AnnotatedString> = tags.mapNotNull { tag ->
+        usableEntries(tag).randomOrNull()?.styled(tag)
     }
 
     Box(
@@ -154,7 +165,7 @@ fun CollocationsScreen() {
                     ) {
                         item { Text("Étiquette sélectionnée : ${v.name}", color = MatrixGreen, fontSize = 18.sp) }
                         item { Text("-${entries.size}-", color = MatrixGreen, fontSize = 18.sp) }
-                        items(entries) { Text(it.asLine(), color = MatrixGreen, fontSize = 16.sp) }
+                        items(entries) { Text(it.styled(), color = MatrixGreen, fontSize = 16.sp) }
                     }
                 }
 
