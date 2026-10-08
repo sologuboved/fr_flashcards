@@ -30,8 +30,8 @@ import org.sologuboved.frflashcards.ui.theme.MatrixGreen
 import java.net.URL
 
 private data class CollocationEntry(val mot: String?, val trad: String?)
-private val TranslationColor = Color(0xFFB6F5C8)
-private val TagColor = Color(0xFF8AB4F8)
+private val TranslationColor = Color(0xFFC4C4C4)
+private val TagColor = Color(0xFFB6F5C8)
 
 private sealed interface CollView {
     data object Menu : CollView
@@ -124,13 +124,9 @@ fun CollocationsScreen() {
                         onClick = { scope.launch { load(showToast = true) } },
                         enabled = !isLoading
                     ) { Text("Actualiser") }
-                } else {
-                    Button(onClick = { view = CollView.Menu }) { Text("retour") }
-                    if (view is CollView.Random) {
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Button(onClick = { view = CollView.Random(randomLines()) }) {
-                            Text("relance")
-                        }
+                } else if (view is CollView.Random) {
+                    Button(onClick = { view = CollView.Random(randomLines()) }) {
+                        Text("Relance")
                     }
                 }
             }
