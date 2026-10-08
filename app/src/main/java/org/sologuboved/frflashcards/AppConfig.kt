@@ -1,10 +1,12 @@
 package org.sologuboved.frflashcards
 
 object AppConfig {
+    const val COLLOCATIONS_JSON_URL =
+        "https://raw.githubusercontent.com/sologuboved/fr_collocations/refs/heads/main/collocations.json"
     const val MAIN_JSON_URL =
         "https://raw.githubusercontent.com/sologuboved/fr_collocations/refs/heads/main/cartes.json"
     const val COI_JSON_URL =
         "https://raw.githubusercontent.com/sologuboved/fr_collocations/refs/heads/main/coi.json"
-    const val COLLOCATIONS_JSON_URL =
-        "https://raw.githubusercontent.com/sologuboved/fr_collocations/refs/heads/main/collocations.json"
+    const val CITATIONS_JSON_URL =
+        "https://raw.githubusercontent.com/sologuboved/fr_collocations/refs/heads/main/citations.json"
 }

@@ -34,12 +34,12 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun AppPager() {
-    val pagerState = rememberPagerState(pageCount = { 3 })
+    val pagerState = rememberPagerState(pageCount = { 4 })
 
     Box(modifier = Modifier.fillMaxSize().background(DarkBackgroundColor)) {
         HorizontalPager(
             state = pagerState,
-            beyondViewportPageCount = 2,
+            beyondViewportPageCount = 3,
             modifier = Modifier.fillMaxSize()
         ) { page ->
             when (page) {
@@ -54,6 +54,7 @@ fun AppPager() {
                     parseJson = ::parseVerbePrepositionJson,
                     showLanguageToggle = false
                 )
+                3 -> CitationsScreen()
             }
         }
 
@@ -63,7 +64,7 @@ fun AppPager() {
                 .navigationBarsPadding()
                 .padding(bottom = 8.dp)
         ) {
-            repeat(3) { index ->
+            repeat(4) { index ->
                 Text(
                     text = if (pagerState.currentPage == index) "●" else "○",
                     color = MatrixGreen,
