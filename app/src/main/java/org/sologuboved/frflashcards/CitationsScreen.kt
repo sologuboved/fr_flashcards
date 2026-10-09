@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -160,14 +161,16 @@ fun CitationsScreen() {
                     }
                 }
 
-                is CitView.Result -> Column {
-                    Text(v.quote, color = MatrixGreen, fontSize = 18.sp)
-                    Spacer(modifier = Modifier.height(16.dp))
-                    Text(
-                        text = if (v.work != null) "${v.author} - ${v.work}" else v.author,
-                        color = AuthorColor,
-                        fontSize = 16.sp
-                    )
+                is CitView.Result -> SelectionContainer {
+                    Column {
+                        Text(v.quote, color = MatrixGreen, fontSize = 18.sp)
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            text = if (v.work != null) "${v.author} - ${v.work}" else v.author,
+                            color = AuthorColor,
+                            fontSize = 16.sp
+                        )
+                    }
                 }
             }
         }

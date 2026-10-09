@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -159,22 +160,44 @@ fun CollocationsScreen() {
 
                 is CollView.Tag -> {
                     val entries = usableEntries(v.name)
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        contentPadding = PaddingValues(bottom = 32.dp)
-                    ) {
-                        item { Text("Étiquette sélectionnée : ${v.name}", color = MatrixGreen, fontSize = 18.sp) }
-                        item { Text("-${entries.size}-\n", color = MatrixGreen, fontSize = 18.sp) }
-                        items(entries) { Text(it.styled(), color = MatrixGreen, fontSize = 16.sp) }
+                    SelectionContainer {
+                        LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                            contentPadding = PaddingValues(bottom = 32.dp)
+                        ) {
+                            item {
+                                Text(
+                                    "Étiquette sélectionnée : ${v.name}",
+                                    color = MatrixGreen,
+                                    fontSize = 18.sp
+                                )
+                            }
+                            item {
+                                Text(
+                                    "-${entries.size}-\n",
+                                    color = MatrixGreen,
+                                    fontSize = 18.sp
+                                )
+                            }
+                            items(entries) {
+                                Text(
+                                    it.styled(),
+                                    color = MatrixGreen,
+                                    fontSize = 16.sp
+                                )
+                            }
+                        }
                     }
                 }
 
                 is CollView.Random -> key(v) {
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(16.dp),
-                        contentPadding = PaddingValues(bottom = 32.dp)
-                    ) {
-                        items(v.lines) { Text(it, color = MatrixGreen, fontSize = 16.sp) }
+                    SelectionContainer {
+                        LazyColumn(
+                            verticalArrangement = Arrangement.spacedBy(16.dp),
+                            contentPadding = PaddingValues(bottom = 32.dp)
+                        ) {
+                            items(v.lines) { Text(it, color = MatrixGreen, fontSize = 16.sp) }
+                        }
                     }
                 }
             }
